@@ -15,16 +15,12 @@ def rand_rgb(bright=None):
     elif bright:
         color =  [randint(0,255), randint(0,255), randint(0,255)]
         while math.sqrt(.241*color[0]**2 + .691*color[1]**2 + .068*color[2]**2) < 130: 
-            #print("Color too dark")
-            i = randint(0,2)
-            color[i] += 20
+            color[randint(0,2)] += 20
         return tuple(color)
     else:
         color =  [randint(0,255), randint(0,255), randint(0,255)]
         while math.sqrt(.241*color[0]**2 + .691*color[1]**2 + .068*color[2]**2) > 130: 
-            #print("Color too light")
-            i = randint(0,2)
-            color[i] -= 20
+            color[randint(0,2)] -= 20
         return tuple(color)
 
 def coords_diamond(center_coords):
@@ -62,7 +58,7 @@ class Backgroundifier():
     def rand_line(self):
         point1 = self.rand_point(boarder=True)
         point2 = self.rand_point(boarder=True, first_point=point1)
-        print(f"Line coords: {point1}, {point2}")
+        #print(f"Line coords: {point1}, {point2}")
         return (point1[0], point1[1], point2[0], point2[1])
 
     def draw_lines(self):
@@ -81,7 +77,7 @@ class Backgroundifier():
         draw = ImageDraw.Draw(img)
         for i in range(randint(1000,5000)): 
             draw.point(self.rand_point(), rand_rgb(True))
-        for i in range(30): 
+        for i in range(randint(10,30)): 
             if randint(0,1):
                 draw.polygon(coords_diamond(self.rand_point()), rand_rgb(True))
             else:
@@ -90,7 +86,7 @@ class Backgroundifier():
         return img
 
     def draw(self):
-        background_type = 1 #randint(0,2)
+        background_type = randint(0,1)
         img = None
         if background_type == 0:
             img = self.draw_lines()
