@@ -12,7 +12,7 @@ def rand_rgb():
         color[choice] = color[choice] - 75
     return tuple(color)
 
-def rand_point(first_point = None):
+def rand_boarder_point(first_point = None): #TODO don't rely on global vars like canvas size here
     point = [0,0]
     i = randint(0,1)
     point[i] = randint(0,CANVAS_SIZE[i])
@@ -25,15 +25,27 @@ def rand_point(first_point = None):
     return point
 
 def rand_line():
-    point1 = rand_point()
-    point2 = rand_point(point1)
+    point1 = rand_boarder_point()
+    point2 = rand_boarder_point(first_point=point1)
     print(f"Line coords: {point1}, {point2}")
     return (point1[0], point1[1], point2[0], point2[1])
 
-img = Image.new('RGB', CANVAS_SIZE, (0,0,0))
-draw = ImageDraw.Draw(img)
-for i in range(randint(1,25)):
-    draw.line(rand_line(), rand_rgb(), width=4)
+def draw_background():
+    background_type = randint(0,2)
 
-img.resize(SCREEN_SIZE, Image.ANTIALIAS)
-img.show()
+    img = Image.new('RGB', CANVAS_SIZE, (0,0,0))
+    draw = ImageDraw.Draw(img)
+    if background_type == 0:
+        #Lines
+        for i in range(randint(1,25)):
+            draw.line(rand_line(), rand_rgb(), width=4)
+    elif background_type == 1:
+        #stars
+        for i in range(randint(10,100)):
+            draw.point(rand)#TODO finish
+
+    img.resize(SCREEN_SIZE, Image.ANTIALIAS)
+    img.show()
+
+if __name__ == '__main__':
+    draw_background()
